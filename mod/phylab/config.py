@@ -23,7 +23,7 @@ cur_type_down = {
         }
 
 
-submit = '登  陆'.encode('utf-8')
+submit = u'登陆'
 header = { 
             'Cache-Control': 'no-cache',
             'Origin': 'http://phylab.seu.edu.cn',

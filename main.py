@@ -18,23 +18,23 @@ import tornado.ioloop
 import tornado.options
 
 from tornado.options import define, options
-define('port', default=7005, help='run on the given port', type=int)
+define('port', default=7000, help='run on the given port', type=int)
 
 
 class Application(tornado.web.Application):
 
     def __init__(self):
         handlers = [
-            (r'/webserv2/srtp', SRTPHandler),
-            (r'/webserv2/gpa', GPAHandler),
-            (r'/webserv2/pedetail', pedetailHandler),
-            (r'/webserv2/nic', NICHandler),
-            (r'/webserv2/card', CARDHandler),
-            (r'/webserv2/lecture', LectureHandler),
-            (r'/webserv2/library', LibListHandler),
-            (r'/webserv2/phyLab',PhylabHandler),
-            (r'/webserv2/room',RoomHandler),
-            (r'/webserv2/exam',ExamHandler),
+            (r'/crawler/srtp', SRTPHandler),
+            (r'/crawler/gpa', GPAHandler),
+            (r'/crawler/pedetail', pedetailHandler),
+            (r'/crawler/nic', NICHandler),
+            (r'/crawler/card', CARDHandler),
+            (r'/crawler/lecture', LectureHandler),
+            (r'/crawler/library', LibListHandler),
+            (r'/crawler/phylab',PhylabHandler),
+            (r'/crawler/room',RoomHandler),
+            (r'/crawler/exam',ExamHandler),
         ]
         settings = dict(
             cookie_secret="7CA71A57B571B5AEAC5E64C6042415DE",
