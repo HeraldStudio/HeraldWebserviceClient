@@ -1,5 +1,5 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python
 # @Date    : 2014-10-26 12:46:36
 # @Author  : yml_bright@163.com
 
@@ -41,8 +41,6 @@ class CARDHandler(tornado.web.RequestHandler):
         try:
             client = AsyncHTTPClient()
             response = getCookie(self.db, cardnum, self.get_argument('password'))
-            print ('get cookie')
-            print (response)
             if response['code']==200:
                 cookie = response['content']
                 request = HTTPRequest(
@@ -155,8 +153,8 @@ class CARDHandler(tornado.web.RequestHandler):
                             td = td.findChildren()
                             tmp = {}
                             tmp['date'] = td[0].text
-                            tmp['type'] = td[3].text
-                            tmp['system'] = td[4].text
+                            tmp['type'] = td[3].text.encode('ISO-8859-1').decode('gbk')
+                            tmp['system'] = td[4].text.encode('ISO-8859-1').decode('gbk')
                             tmp['price'] = td[5].text
                             tmp['left'] = td[6].text
                             if(tmp['type']==u'扣款'):
@@ -176,9 +174,9 @@ class CARDHandler(tornado.web.RequestHandler):
             else:
                 retjson['code'] = 401
                 retjson['content'] = 'wrong card number or password'
-        except Exception,e:
+        except Exception as e:
             retjson['code'] = 500
             retjson['content'] = str(e)
-            print traceback.print_exc()
+            print(traceback.print_exc())
         self.write(json.dumps(retjson, ensure_ascii=False, indent=2))
         self.finish()

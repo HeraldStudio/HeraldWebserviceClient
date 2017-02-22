@@ -21,7 +21,6 @@ def getCookie(db,cardnum,card_pwd):
 		else:
 			ret['content'] = result.cookie
 	except NoResultFound:
-		print("no result found")
 		result = CookieCache(cardnum=cardnum,cookie="",date=int(time.time()))
 		state = 0
 	except Exception as e:
