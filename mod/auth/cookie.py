@@ -21,14 +21,16 @@ def getCookie(db,cardnum,card_pwd):
 		else:
 			ret['content'] = result.cookie
 	except NoResultFound:
+		print("no result found")
 		result = CookieCache(cardnum=cardnum,cookie="",date=int(time.time()))
 		state = 0
-	except Exception,e:
+	except Exception as e:
 		ret['code'] = 500
 		ret['content'] = str(e)
 	if state==0:
-		result = authApi(cardnum,card_pwd)
-		if result['code']==200:
+		_result = authApi(cardnum,card_pwd)
+		if _result['code']==200:
+			cookie = _result['content']
 			ret['content'] = cookie
 			result.cookie = cookie
 			try:

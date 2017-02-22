@@ -41,6 +41,8 @@ class CARDHandler(tornado.web.RequestHandler):
         try:
             client = AsyncHTTPClient()
             response = getCookie(self.db, cardnum, self.get_argument('password'))
+            print ('get cookie')
+            print (response)
             if response['code']==200:
                 cookie = response['content']
                 request = HTTPRequest(

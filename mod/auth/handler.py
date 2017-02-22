@@ -54,3 +54,6 @@ def authApi(username,password):
     except Exception,e:
         result['code'] = 500
     return result
+
+if __name__ == "__main__":
+    print authApi('213141748', 'feng13935457109')
