@@ -90,8 +90,8 @@ class CARDHandler(tornado.web.RequestHandler):
                             td = td.findChildren()
                             tmp = {}
                             tmp['date'] = td[0].text
-                            tmp['type'] = td[3].text
-                            tmp['system'] = td[4].text
+                            tmp['type'] = td[3].text.encode('ISO-8859-1').decode('gbk')
+                            tmp['system'] = td[4].text.encode('ISO-8859-1').decode('gbk')
                             tmp['price'] = td[5].text
                             tmp['left'] = td[6].text
                             detail.append(tmp)
