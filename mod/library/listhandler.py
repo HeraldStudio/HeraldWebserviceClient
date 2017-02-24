@@ -12,11 +12,6 @@ from time import time
 
 class LibListHandler(tornado.web.RequestHandler):
 
-    @property
-    def db(self):
-        return self.application.db
-    def on_finish(self):
-        self.db.close()
     def get(self):
         self.write('Herald Web Service')
 

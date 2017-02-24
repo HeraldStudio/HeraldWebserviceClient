@@ -17,10 +17,6 @@ from mod.auth.cookie import getCookie
 
 class LectureHandler(tornado.web.RequestHandler):
 
-    @property
-    def db(self):
-        return self.application.db
-
     def get(self):
         self.write('Herald Web Service')
 
@@ -31,7 +27,7 @@ class LectureHandler(tornado.web.RequestHandler):
         retjson = {'code':200, 'content':''}
 
         try:
-            response = getCookie(self.db, cardnum, self.get_argument('password'))
+            response = getCookie(cardnum, self.get_argument('password'))
             if response['code']==200:
                 cookie = response['content']
                 client = AsyncHTTPClient()

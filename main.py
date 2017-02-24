@@ -2,7 +2,6 @@
 # @Date    : 2014-06-25 15:43:36
 # @Author  : xindervella@gamil.com yml_bright@163.com
 from sqlalchemy.orm import scoped_session, sessionmaker
-from mod.models.db import engine
 from mod.gpa.gpa_handler import GPAHandler
 from mod.pe.pedetailHandler import pedetailHandler
 from mod.srtp.srtp_handler import SRTPHandler
@@ -41,9 +40,6 @@ class Application(tornado.web.Application):
             debug=True
         )
         tornado.web.Application.__init__(self, handlers, **settings)
-        self.db = scoped_session(sessionmaker(bind=engine,
-                                              autocommit=False, autoflush=True,
-                                              expire_on_commit=False))
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()

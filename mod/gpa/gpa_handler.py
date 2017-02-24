@@ -13,28 +13,20 @@ import io
 # import Image
 from PIL import Image
 import base64
+from sqlalchemy.orm.exc import NoResultFound
 from time import time,localtime, strftime
-from mod.auth.cookie import getCookie
 
 
 class GPAHandler(tornado.web.RequestHandler):
-    @property
-    def db(self):
-        return self.application.db
-    def on_finish(self):
-        self.db.close()
-    
     def get(self):
         self.write('Herald Web Service')
 
     @tornado.web.asynchronous
     @tornado.gen.engine
     def post(self):
-        username = self.get_argument('cardnum', default=None)
+        username = self.get_argument('username', default=None)
         pwd = self.get_argument('password', default=None)
-        status = None
 
-        print username, pwd
         retjson = {'code':200, 'content':''}
         if not (username or pwd):
             retjson['code'] = 400
@@ -47,7 +39,7 @@ class GPAHandler(tornado.web.RequestHandler):
                 retjson['code'] = 408
                 retjson['content'] = 'time out'
             else:
-                cookie = response.headers['Set-Cookie'].split(';')[0]+";"+response.headers['Set-Cookie'].split(';')[1].split(',')[1]
+                cookie = response.headers['Set-Cookie'].split(';')[0]#+";"+response.headers['Set-Cookie'].split(';')[1].split(',')[1]
                 img = Image.open(io.BytesIO(response.body))
                 vercode = self.recognize(img)
                 params = urllib.urlencode({
@@ -79,6 +71,7 @@ class GPAHandler(tornado.web.RequestHandler):
         ret = json.dumps(retjson, ensure_ascii=False, indent=2)
         self.write(ret)
         self.finish()
+        # refresh cache
 
     def recognize(self, img):
         start = [13, 59, 105, 151]
@@ -129,3 +122,4 @@ class GPAHandler(tornado.web.RequestHandler):
                 'extra': tds[7].text[:-6]
             })
         return items
+

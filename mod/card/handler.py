@@ -18,12 +18,6 @@ from mod.auth.cookie import getCookie
 
 class CARDHandler(tornado.web.RequestHandler):
 
-    @property
-    def db(self):
-        return self.application.db
-    def on_finish(self):
-        self.db.close()
-        
     def get(self):
         self.write('Herald Web Service')
 
@@ -40,7 +34,7 @@ class CARDHandler(tornado.web.RequestHandler):
         retjson = {'code':200, 'content':''}
         try:
             client = AsyncHTTPClient()
-            response = getCookie(self.db, cardnum, self.get_argument('password'))
+            response = getCookie(cardnum, self.get_argument('password'))
             if response['code']==200:
                 cookie = response['content']
                 request = HTTPRequest(

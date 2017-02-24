@@ -15,11 +15,6 @@ from time import time
 
 class SRTPHandler(tornado.web.RequestHandler):
 
-    @property
-    def db(self):
-        return self.application.db
-    def on_finish(self):
-        self.db.close()
     def get(self):
         self.write('Herald Web Service')
 
@@ -51,7 +46,7 @@ class SRTPHandler(tornado.web.RequestHandler):
                     retjson['content'] = 'number not exist'
                 else:
                     retjson['content'] = self.parser(response.body)
-		ret = json.dumps(retjson, ensure_ascii=False, indent=2)
+        ret = json.dumps(retjson, ensure_ascii=False, indent=2)
         self.write(ret)
         self.finish()
 

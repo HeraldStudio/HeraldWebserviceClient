@@ -5,39 +5,26 @@
 import time,json
 import urllib
 from tornado.httpclient import HTTPRequest, HTTPClient,HTTPError
-from ..models.cookie_cache import CookieCache
 from sqlalchemy.orm.exc import NoResultFound
 from config import *
 from newHandler import newAuthApi
 from handler import authApi
+from mod.models.cache import cache
 
-def getCookie(db,cardnum,card_pwd):
-	state = 1
-	ret = {'code':200,'content':''}
-	try:
-		result = db.query(CookieCache).filter(CookieCache.cardnum==cardnum).one()
-		if (result.date+COOKIE_TIMEOUT<int(time.time())):
-			state = 0
-		else:
-			ret['content'] = result.cookie
-	except NoResultFound:
-		result = CookieCache(cardnum=cardnum,cookie="",date=int(time.time()))
-		state = 0
-	except Exception as e:
-		ret['code'] = 500
-		ret['content'] = str(e)
-	if state==0:
-		_result = authApi(cardnum,card_pwd)
-		if _result['code']==200:
-			cookie = _result['content']
-			ret['content'] = cookie
-			result.cookie = cookie
-			try:
-				db.add(result)
-				db.commit()
-			except:
-				db.rollback()
-		else:
-			ret['code'] = 500
-			ret['content'] = cookie
-	return ret
+
+def getCookie(cardnum, card_pwd):
+    state = 1
+    ret = {'code':200,'content':''}
+    try:
+        result = cache[cardnum]
+        ret['content'] = result
+    except KeyError:
+        _result = authApi(cardnum, card_pwd)
+        if _result['code']==200:
+            cookie = _result['content']
+            ret['content'] = cookie
+            cache[cardnum] = cookie
+        else:
+            ret['code'] = 500
+            ret['content'] = 'error'
+    return ret
